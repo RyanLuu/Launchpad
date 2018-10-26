@@ -53,6 +53,9 @@ if __name__ == "__main__":
     soup = BeautifulSoup(html, "html.parser")
     paragraphs = soup.find_all('p')
 
+    if not os.path.exists(SCRIPTS_DIR):
+        os.makedirs(SCRIPTS_DIR)
+
     for p in paragraphs:
         relative_link = p.a['href']
         title, script = get_script(relative_link)
