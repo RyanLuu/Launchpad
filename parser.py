@@ -5,7 +5,7 @@ import sys
 
 SCRIPTS_DIR = 'scripts'
 
-default_regex = re.compile(r"\n[\t ]*([A-Z0-9'\- ]+[A-Z0-9'\-])(?: \(.+\))?\n((\s+)(?!\()\S.*(?:\n\3\S.*|\3\s+\(.*\))*|\s+\(.+\)(?:\n[\t ]+\S.*)*)")
+default_regex = re.compile(r"\n[\t ]*([A-Z0-9'\- ]+[A-Z0-9'\-])(?: \(.+\))?\n(([\t ]+(?!\(|\s))?(?(3).*(?:\n\3.*)*|[\t ]+.*(?:\n[\t ]+.*)*))")
 
 def parse(filepath, regex=default_regex):
     with open(os.path.join(SCRIPTS_DIR, filepath)) as content_file:
