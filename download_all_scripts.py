@@ -31,7 +31,7 @@ def get_script(relative_link):
     try:
         script_link = front_soup.find_all('p', align="center")[0].a['href']
     except IndexError:
-        print('No script available :(' % tail)
+        print('No script available :(')
         return None, None
 
     if script_link.endswith('.html'):
@@ -48,8 +48,8 @@ def get_script(relative_link):
 
 
 if __name__ == "__main__":
-    response = requests.get('http://www.imsdb.com/genre/Horror')
-    #Sci-Fi, Horror
+    response = requests.get('http://www.imsdb.com/genre/Action')
+    #Sci-Fi, Horror, Action
     html = response.text
 
     soup = BeautifulSoup(html, "html.parser")
