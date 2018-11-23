@@ -23,7 +23,7 @@ top.location.href=location.href
 
 def get_script(relative_link):
     tail = relative_link.split('/')[-1]
-    print('fetching %s' % tail)
+    print('Fetching %s...' % tail[:-12], end='')
     script_front_url = BASE_URL + quote(relative_link)
     front_page_response = requests.get(script_front_url)
     front_soup = BeautifulSoup(front_page_response.text, "html.parser")
@@ -31,7 +31,7 @@ def get_script(relative_link):
     try:
         script_link = front_soup.find_all('p', align="center")[0].a['href']
     except IndexError:
-        print('%s has no script :(' % tail)
+        print('No script available :(' % tail)
         return None, None
 
     if script_link.endswith('.html'):
@@ -40,14 +40,16 @@ def get_script(relative_link):
         script_soup = BeautifulSoup(requests.get(script_url).text, "lxml")
         script_text = script_soup.find_all('td', {'class': "scrtext"})[0].get_text()
         script_text = clean_script(script_text)
+        print('Success!')
         return title, script_text
     else:
-        print('%s is a pdf :(' % tail)
+        print('Script is a pdf :(')
         return None, None
 
 
 if __name__ == "__main__":
-    response = requests.get('http://www.imsdb.com/all%20scripts/')
+    response = requests.get('http://www.imsdb.com/genre/Horror')
+    #Sci-Fi, Horror
     html = response.text
 
     soup = BeautifulSoup(html, "html.parser")
@@ -58,11 +60,11 @@ if __name__ == "__main__":
     for p in paragraphs:
         relative_link = p.a['href']
         title, script = get_script(relative_link)
-
+        
         if not script:
             continue
 
-        with open(os.path.join(SCRIPTS_DIR, title.strip('.html') + '.txt'), 'w') as outfile:
+        with open(os.path.join(SCRIPTS_DIR, title[:-5] + '.txt'), 'w') as outfile:
             try:
                 outfile.write(script)
             except:

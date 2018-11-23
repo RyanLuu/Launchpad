@@ -1,5 +1,13 @@
 import re
 
+def make_cast(cl_table):
+    cast = Cast()
+    for cl in cl_table:
+        if cl[0] not in cast:
+            cast += cl[0]
+        cast.get_character(cl[0]).add_line(cl[1])
+    return cast
+
 def line_to_words(line):
     return re.findall(r"\b[A-Za-z]+(?:[-'][A-Za-z]+)?\b", line)
 
@@ -7,6 +15,9 @@ class Cast:
 
     def __init__(self):
         self.characters = []
+
+    def filter(self, min_lines=0):
+        self.characters = [c for c in self.characters if len(c.lines) >= min_lines]
 
     def get_character(self, name):
         return next((c for c in self.characters if c.name == name), None)
