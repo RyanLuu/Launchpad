@@ -4,7 +4,7 @@ from urllib.parse import quote
 from bs4 import BeautifulSoup
 import requests
 
-BASE_URL = 'http://www.imsdb.com'
+BASE_URL = 'https://www.imsdb.com'
 SCRIPTS_DIR = 'scripts'
 
 def clean_script(text):
@@ -48,8 +48,8 @@ def get_script(relative_link):
 
 
 if __name__ == "__main__":
-    response = requests.get('http://www.imsdb.com/genre/Action')
-    #Sci-Fi, Horror, Action
+    response = requests.get('https://www.imsdb.com/all%20scripts/')
+    #Sci-Fi, Horror, Action, Fantasy,Comedy
     html = response.text
 
     soup = BeautifulSoup(html, "html.parser")

@@ -16,6 +16,14 @@ class Cast:
     def __init__(self):
         self.characters = []
 
+    @property
+    def all_lines(self):
+        return [line for line in (c.lines for c in self.characters)]
+
+    @property
+    def all_words(self):
+        return [word for word in (c.words for c in self.characters)]
+
     def filter(self, min_lines=0):
         self.characters = [c for c in self.characters if len(c.lines) >= min_lines]
 
@@ -36,6 +44,9 @@ class Cast:
         else:
             return NotImplementedError
         
+    def __len__(self):
+        return len(self.characters)
+
     def __iter__(self):
         return iter(self.characters)
     
