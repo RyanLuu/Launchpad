@@ -4,7 +4,7 @@ import parser
 
 def load():
   global model
-  model = gensim.models.KeyedVectors.load_word2vec_format('./models/GoogleNews-vectors-negative300.bin', binary=True)
+  model = gensim.models.KeyedVectors.load_word2vec_format('./models/GoogleNews-vectors-negative300.bin', binary=True, limit=500000)
 
 def is_valid(word):
   return word in model.wv
