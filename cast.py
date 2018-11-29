@@ -1,4 +1,4 @@
-import re
+import parser
 
 def make_cast(cl_table):
     cast = Cast()
@@ -7,9 +7,6 @@ def make_cast(cl_table):
             cast += cl[0]
         cast.get_character(cl[0]).add_line(cl[1])
     return cast
-
-def line_to_words(line):
-    return re.findall(r"\b[A-Za-z]+(?:[-'][A-Za-z]+)?\b", line)
 
 class Cast:
 
@@ -38,8 +35,6 @@ class Cast:
         if isinstance(other, Character):
             if not self.__contains__(other):
                 self.characters.append(other)
-            else:
-                print("we")
             return self
         else:
             return NotImplementedError
@@ -73,7 +68,7 @@ class Character:
 
     def add_line(self, line):
         self.lines.append(line)
-        self.words.extend(line_to_words(line))
+        self.words.extend(parser.line_to_words(line))
 
     @property
     def average_wpL(self):
