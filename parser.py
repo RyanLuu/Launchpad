@@ -8,7 +8,13 @@ default_regex = re.compile(r"\n[\t ]*([A-Z0-9'\- ]+[A-Z0-9'\-])(?: \(.+\))?(?: \
 def parse_script(filename, directory='scripts', regex=default_regex):
     with open(os.path.join(directory, filename)) as content_file:
         matches = re.finditer(regex, unidecode.unidecode(re.sub(u'u\0092', '\'', content_file.read())))
-        return [(m.group(1), re.sub('\(.+\)|\[.+\]', '', re.sub('\s+', ' ', m.group(2)).strip())) for m in matches]
+        lines = []
+        for m in matches:
+          name = m.group(1)
+          line = re.sub('\s+', ' ', re.sub('\(.+\)|\[.+\]', '', m.group(2))).strip()
+          if len(line):
+            lines.append((name, line))
+        return lines
 
 def line_to_words(line):
   

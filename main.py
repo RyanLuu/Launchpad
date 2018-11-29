@@ -35,23 +35,20 @@ for i in range(1, len(sys.argv)):
   X = labels = np.array([])
   y = np.array([], dtype=np.int32)
   
-  if True:
-    for i, c in enumerate(script_cast):
-      vectors = np.array([word2vec.sentence_vector(line) for line in c.lines])
-      X = np.concatenate((X, vectors)) if X.size else vectors
-      y = np.concatenate((y, [i] * vectors.shape[0]))
-      labels = np.concatenate((labels, c.lines))
+  for j, c in enumerate(script_cast):
+    if True:
+      valid_lines = [line for line in c.lines if word2vec.is_valid(line)]
+      vectors = np.array([word2vec.sentence_vector(line) for line in valid_lines])
+      labels = np.concatenate((labels, valid_lines))
 
-  else:
-    words = np.array([])
-    for i, c in enumerate(script_cast):
+    else:
       valid_words = [word for word in c.words if word2vec.is_valid(word)]
       vectors = np.array([word2vec.word_vector(word) for word in valid_words])
-      X = np.concatenate((X, vectors)) if X.size else vectors
-      y = np.concatenate((y, [i] * vectors.shape[0]))
       labels = np.concatenate((labels, valid_words))
-    
 
+    X = np.concatenate((X, vectors)) if X.size else vectors
+    y = np.concatenate((y, [j] * vectors.shape[0]))
+    
   feature_cols = ['d{}'.format(i) for i in range(X.shape[1])]
 
   df = pd.DataFrame(X, columns=feature_cols)
