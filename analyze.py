@@ -40,8 +40,6 @@ for i in range(1, len(sys.argv)):
   script_data = parser.parse_script(filename)
   script_cast = cast.make_cast(script_data).filter(min_lines=20)
 
-  freq = Counter(script_cast.all_words)
-
   plot = figure(title=arg.replace('-', ' '),
              tools='pan, wheel_zoom, box_zoom, reset',
              active_scroll='wheel_zoom')
@@ -79,11 +77,16 @@ for i in range(1, len(sys.argv)):
 
   df['x-tsne'] = X_embedded[:, 0]
   df['y-tsne'] = X_embedded[:, 1]
+
+  if mode == 'words':
+    freq = Counter(script_cast.all_words)
+  elif mode == 'lines':
+    freq = Counter(script_cast.all_lines)
   df['inv-freq'] = df['label'].map(lambda x: 1/freq[x])
 
   for i, c in enumerate(script_cast):
     source = ColumnDataSource(data=dict(df.loc[df['char_index'] == i, ['x-tsne', 'y-tsne', 'label', 'inv-freq']]))
-    plot.circle(0, 0, color=Category10[10][i % 10], alpha=0.5, size=0, legend=c.name) # fixes legend
+    plot.circle(0, 0, color=Category10[10][i % 10], size=0, legend=c.name) # fixes legend
     plot.circle('x-tsne', 'y-tsne', color=Category10[10][i % 10], alpha='inv-freq', size=10, legend=c.name, source=source)
 
   plot.legend.location='bottom_right'

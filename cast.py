@@ -25,7 +25,10 @@ class Cast:
 
     @property
     def all_lines(self):
-        return [line for line in (c.lines for c in self.characters)]
+        lines = []
+        for c in self.characters:
+            lines.extend(c.lines)
+        return lines
 
     @property
     def all_words(self):

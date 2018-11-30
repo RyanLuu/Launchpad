@@ -15,7 +15,7 @@ def is_valid(x):
     return x in model.wv
   if isinstance(x, Iterable):
     valid = [is_valid(s) for s in x]
-    return not False in valid
+    return True in valid
 
   return NotImplementedError
 
@@ -28,4 +28,4 @@ def sentence_vector(words):
   word_vectors = np.array([word_vector(word) for word in words if is_valid(word)])
   if (len(word_vectors)):
     return np.array([sum(i) for i in zip(*word_vectors)])
-  return np.zeros(model.vector_size)
+  return None

@@ -24,7 +24,12 @@ for i in range(1, len(sys.argv)):
 
 full_cast = cast.combine(casts)
 
+wmdistances = []
+
 for j, c in enumerate(full_cast):
-    valid_lines = [parser.line_to_words(line) for line in c.lines if word2vec.is_valid(parser.line_to_words(line))]
-    wmdistances = [word2vec.wmdistance(parser.line_to_words(user_input), line) for line in valid_lines]
-    print("{} {:.4f}".format(c.name, sum(wmdistances) / len(wmdistances)))
+    wmdistances.extend([(c.name, line, word2vec.wmdistance(parser.line_to_words(user_input), parser.line_to_words(line))) for line in c.lines])
+
+wmdistances.sort(key=lambda x: x[2])
+best_distances = wmdistances[:10]
+for distance in best_distances:
+  print(distance)
