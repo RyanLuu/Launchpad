@@ -2,17 +2,26 @@ import parser
 
 def make_cast(cl_table):
     cast = Cast()
-    cast.characters = []
     for cl in cl_table:
         if cl[0] not in cast:
-            cast += cl[0]
+            cast.add_character(cl[0])
         cast.get_character(cl[0]).add_line(cl[1])
     return cast
 
+def combine(casts):
+    full_cast = Cast()
+    for cast in casts:
+        for char in cast:
+            if char not in full_cast:
+                full_cast.add_character(char.name)
+            full_cast.get_character(char.name).add_lines(char.lines)
+
+    return full_cast
+
 class Cast:
 
-    def __init__(self, characters=[]):
-        self.characters = characters
+    def __init__(self):
+        self.characters = [] 
 
     @property
     def all_lines(self):
@@ -26,21 +35,15 @@ class Cast:
         self.characters = [c for c in self.characters if len(c.lines) >= min_lines]
         return self
 
+    def add_character(self, char):
+        if isinstance(char, str):
+            char = Character(char)
+        if char not in self:
+            self.characters.append(char)
+
     def get_character(self, name):
         return next((c for c in self.characters if c.name == name), None)
 
-    def __add__(self, other):
-        
-        if isinstance(other, str):
-            other = Character(other)
-
-        if isinstance(other, Character):
-            if not self.__contains__(other):
-                self.characters.append(other)
-            return self
-        else:
-            return NotImplementedError
-        
     def __len__(self):
         return len(self.characters)
 
@@ -67,6 +70,10 @@ class Character:
         self.name = name
         self.lines = []
         self.words = []
+
+    def add_lines(self, lines):
+        for line in lines:
+            self.add_line(line)
 
     def add_line(self, line):
         self.lines.append(line)

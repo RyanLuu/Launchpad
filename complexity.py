@@ -4,6 +4,7 @@ from bokeh.palettes import viridis
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 import cast
 import math
+import os
 import parser
 import sys
 
@@ -41,5 +42,6 @@ for i in range(1, len(sys.argv)):
   plot.yaxis.axis_label = 'Letters per Word'
   plots.append(plot)
 
-output_file('complexity.html', title='Complexity')
+os.makedirs('out/complexity', exist_ok=True)
+output_file(os.path.join('out/complexity', '{}{}.html'.format(sys.argv[1], '+' + str(len(sys.argv)-2) if len(sys.argv) > 2 else '')), title='Complexity')
 show(row(*plots))
