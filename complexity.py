@@ -1,4 +1,5 @@
 from bokeh.layouts import row
+from bokeh.models.glyphs import Text
 from bokeh.palettes import viridis
 from bokeh.plotting import figure, output_file, show, ColumnDataSource
 import cast
@@ -20,9 +21,9 @@ for i in range(1, len(sys.argv)):
   script_cast = cast.make_cast(script_data).filter(min_lines=20)
 
   plot = figure(title=arg.replace('-', ' '),
-             tools='hover, pan, wheel_zoom, box_zoom, reset',
-             tooltips=[('name', '@name'), ('lines', '@lines')])
- 
+             tools='pan, wheel_zoom, box_zoom, reset',
+             active_scroll='wheel_zoom') 
+
   source = ColumnDataSource(data=dict(
     name = [c.name for c in script_cast],
     wpL = [c.average_wpL for c in script_cast],
@@ -33,9 +34,11 @@ for i in range(1, len(sys.argv)):
   ))
   plot.circle('wpL', 'lpw', color='color', source=source, alpha=0.2, size='size')
   
+  glyph = Text(x='wpL', y='lpw', y_offset=8, text='name', text_align='center', text_font_size='10pt')
+  plot.add_glyph(source, glyph)
+
   plot.xaxis.axis_label = 'Words per Line'
   plot.yaxis.axis_label = 'Letters per Word'
-
   plots.append(plot)
 
 output_file('complexity.html', title='Complexity')

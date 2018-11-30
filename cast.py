@@ -2,6 +2,7 @@ import parser
 
 def make_cast(cl_table):
     cast = Cast()
+    cast.characters = []
     for cl in cl_table:
         if cl[0] not in cast:
             cast += cl[0]
