@@ -11,7 +11,7 @@ def parse_script(filename, directory='scripts', regex=default_regex):
         lines = []
         for m in matches:
           name = m.group(1)
-          line = re.sub('\s+', ' ', re.sub('\(.+\)|\[.+\]', '', m.group(2))).strip()
+          line = re.sub('\s+', ' ', re.sub('\(.+?\)|\[.+?\]', '', m.group(2), 0, re.DOTALL)).strip()
           if len(line):
             lines.append((name, line))
         return lines

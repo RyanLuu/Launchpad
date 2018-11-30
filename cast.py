@@ -29,7 +29,10 @@ class Cast:
 
     @property
     def all_words(self):
-        return [word for word in (c.words for c in self.characters)]
+        words = []
+        for c in self.characters:
+            words.extend(c.words)
+        return words
 
     def filter(self, min_lines=0):
         self.characters = [c for c in self.characters if len(c.lines) >= min_lines]
