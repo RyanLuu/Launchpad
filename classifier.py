@@ -16,8 +16,7 @@ for i in range(1, len(sys.argv)):
   filename = arg + '.txt'
 
   script_data = parser.parse_script(filename)
-  script_cast = cast.make_cast(script_data)
-  script_cast.filter(min_lines=20)
+  script_cast = cast.make_cast(script_data).filter(min_lines=20)
 
   for j, c in enumerate(script_cast):
     valid_lines = [parser.line_to_words(line) for line in c.lines if word2vec.is_valid(parser.line_to_words(line))]

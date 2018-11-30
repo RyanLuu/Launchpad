@@ -28,5 +28,4 @@ def sentence_vector(words):
   word_vectors = np.array([word_vector(word) for word in words if is_valid(word)])
   if (len(word_vectors)):
     return np.array([sum(i) for i in zip(*word_vectors)])
-  print(words)
   return np.zeros(model.vector_size)

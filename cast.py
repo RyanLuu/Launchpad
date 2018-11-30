@@ -10,8 +10,8 @@ def make_cast(cl_table):
 
 class Cast:
 
-    def __init__(self):
-        self.characters = []
+    def __init__(self, characters=[]):
+        self.characters = characters
 
     @property
     def all_lines(self):
@@ -23,6 +23,7 @@ class Cast:
 
     def filter(self, min_lines=0):
         self.characters = [c for c in self.characters if len(c.lines) >= min_lines]
+        return self
 
     def get_character(self, name):
         return next((c for c in self.characters if c.name == name), None)
