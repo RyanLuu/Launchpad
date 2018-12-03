@@ -9,7 +9,6 @@ if len(sys.argv) < 2:
 
 word2vec.load()
 
-user_input = input("String: ")
 
 casts = []
 
@@ -24,12 +23,17 @@ for i in range(1, len(sys.argv)):
 
 full_cast = cast.combine(casts)
 
-wmdistances = []
+while True:
 
-for j, c in enumerate(full_cast):
-    wmdistances.extend([(c.name, line, word2vec.wmdistance(parser.line_to_words(user_input), parser.line_to_words(line))) for line in c.lines])
+  print()
+  user_input = input("String: ")
+  print()
 
-wmdistances.sort(key=lambda x: x[2])
-best_distances = wmdistances[:10]
-for distance in best_distances:
-  print(distance)
+  wmdistances = []
+
+  for j, c in enumerate(full_cast):
+      wmdistances.extend([(c.name, line, word2vec.wmdistance(parser.line_to_words(user_input), parser.line_to_words(line))) for line in c.lines])
+
+  wmdistances.sort(key=lambda x: x[2])
+  for distance in wmdistances[:10]:
+    print('[{2:.4f}] {0}: "{1}"'.format(*distance))
