@@ -1,6 +1,9 @@
 # Script files
 # scripts/
 
+# Generated HTML plots
+out/
+
 # Trained models
 models/
 
